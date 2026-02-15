@@ -1,0 +1,10 @@
+:root {
+    --theme-60: #f8fafc;
+    --theme-30: #ffffff;
+    --theme-10: linear-gradient(to right, #f43f5e, #fb923c);
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --accent-color: #f43f5e;
+}
+
+@import "tailwindcss";
