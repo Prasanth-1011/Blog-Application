@@ -1,19 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-    createUserWithEmailAndPassword,
-    sendEmailVerification,
-    updateProfile,
-} from "firebase/auth";
-import axios from "axios";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import { Context } from "../../Context";
 import Input from "../../Components/Input";
 import { auth } from "../../Utils/Firebase";
 
-const Register = () => {
-    const { user, setUser, loggedUser, setLoggedUser, authLoading } =
-        useContext(Context);
+const ForgotPassword = () => {
+    const { user, setUser, loggedUser, authLoading } = useContext(Context);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState({ text: "", type: "" });
     const navigate = useNavigate();
@@ -44,21 +38,12 @@ const Register = () => {
         }));
     };
 
-    const baseUrl = "https://blog-application-7u56.onrender.com/api";
-
-    const handleRegister = async () => {
-        if (
-            user.username === "" ||
-            user.mail === "" ||
-            user.password === "" ||
-            user.confirmPassword === ""
-        ) {
-            setMessage({ text: "Please Fill All The Fields", type: "error" });
-            return;
-        }
-
-        if (user.password !== user.confirmPassword) {
-            setMessage({ text: "Passwords Do Not Match", type: "error" });
+    const handleReset = async () => {
+        if (user.mail === "") {
+            setMessage({
+                text: "Please Enter Your Registered Mail",
+                type: "error",
+            });
             return;
         }
 
@@ -66,71 +51,16 @@ const Register = () => {
         setMessage({ text: "", type: "" });
 
         try {
-            // Backend Connectivity Check
-            const pingUrl = baseUrl.replace("/api", "");
-            try {
-                await axios.get(pingUrl);
-            } catch (pingError) {
-                console.error("Backend Unreachable:", pingError);
-                setMessage({
-                    text: "Server Unreachable. Please Try Again Later.",
-                    type: "error",
-                });
-                setIsLoading(false);
-                return;
-            }
-
-            const register = await createUserWithEmailAndPassword(
-                auth,
-                user.mail,
-                user.password,
-            );
-
-            // Update Firebase Profile With Username
-            await updateProfile(register.user, {
-                displayName: user.username,
+            await sendPasswordResetEmail(auth, user.mail);
+            setMessage({
+                text: "Password Reset Link Sent To Your Email!",
+                type: "success",
             });
-
-            await sendEmailVerification(register.user);
-
-            const userData = {
-                username: user.username,
-                mail: user.mail,
-                uid: register.user.uid,
-            };
-
-            const response = await axios.post(`${baseUrl}/register`, userData);
-
-            if (response.status === 201 || response.status === 200) {
-                setMessage({
-                    text: "Registration Successful! Redirecting to Dashboard...",
-                    type: "success",
-                });
-
-                setLoggedUser({
-                    loginStatus: true,
-                    username: user.username,
-                    mail: user.mail,
-                    uid: register.user.uid,
-                    photoUrl: "",
-                    emailVerified: false,
-                });
-
-                // Clear Form
-                setUser({
-                    username: "",
-                    mail: "",
-                    password: "",
-                    confirmPassword: "",
-                });
-
-                setTimeout(() => {
-                    setIsLoading(false);
-                    navigate("/dashboard");
-                }, 2000);
-            }
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
         } catch (error) {
-            console.error("Registration Error:", error);
+            console.error("Password Reset Error:", error);
             setMessage({ text: error.message, type: "error" });
             setIsLoading(false);
         }
@@ -143,8 +73,11 @@ const Register = () => {
                     <div className="p-10">
                         <div className="mb-10 text-center">
                             <h1 className="text-4xl font-extrabold text-(--text-primary)">
-                                Register Account
+                                Reset Password
                             </h1>
+                            <p className="p-4 text-sm font-medium text-(--text-secondary)">
+                                Enter Your Email To Receive Password Reset Link
+                            </p>
                         </div>
 
                         <form className="space-y-4">
@@ -157,15 +90,6 @@ const Register = () => {
                             )}
 
                             <Input
-                                label="Username"
-                                name="username"
-                                type="text"
-                                placeholder="Enter Your Username"
-                                value={user.username}
-                                onChange={handleChange}
-                            />
-
-                            <Input
                                 label="Mail"
                                 name="mail"
                                 type="email"
@@ -174,29 +98,11 @@ const Register = () => {
                                 onChange={handleChange}
                             />
 
-                            <Input
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder="Enter Your Password"
-                                value={user.password}
-                                onChange={handleChange}
-                            />
-
-                            <Input
-                                label="Confirm Password"
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="Confirm Your Password"
-                                value={user.confirmPassword}
-                                onChange={handleChange}
-                            />
-
                             {isLoading ? (
                                 <div className="charging-container">
                                     <div className="charging-bar" />
                                     <span className="charging-text">
-                                        Registering Account...
+                                        Processing Reset...
                                     </span>
                                 </div>
                             ) : (
@@ -205,10 +111,12 @@ const Register = () => {
                                     style={{
                                         backgroundImage: "var(--theme-10)",
                                     }}
-                                    onClick={handleRegister}
+                                    onClick={handleReset}
                                     className="group relative flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl px-6 py-3 font-bold text-white shadow-[0_10px_20px_rgba(244,63,94,0.2)] transition-all hover:scale-[1.01] hover:shadow-[0_15px_30px_rgba(244,63,94,0.3)] active:scale-[0.98] disabled:opacity-50"
                                 >
-                                    <span className="relative">Register</span>
+                                    <span className="relative">
+                                        Send Reset Link
+                                    </span>
                                     <div className="absolute inset-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-20" />
                                 </button>
                             )}
@@ -216,7 +124,7 @@ const Register = () => {
 
                         <p className="mt-8 flex items-center justify-center gap-2">
                             <span className="text-sm font-medium text-(--text-secondary)">
-                                Already Have An Account?{" "}
+                                Back To{" "}
                             </span>
                             <Link
                                 to="/"
@@ -232,4 +140,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default ForgotPassword;

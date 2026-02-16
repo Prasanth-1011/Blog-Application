@@ -3,7 +3,7 @@ const Input = ({ label, name, type, placeholder, value, onChange }) => {
         <div className="flex flex-col gap-2">
             <label
                 htmlFor={name}
-                className="ml-1 text-xs font-bold tracking-widest text-slate-400"
+                className="ml-2 text-sm font-bold text-slate-400"
             >
                 {label}
             </label>
