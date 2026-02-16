@@ -45,7 +45,7 @@ const Explore = () => {
         setIsCommenting(true);
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/posts/${viewingPost._id}/comment`,
+                `${baseUrl}/${viewingPost._id}/comment`,
                 {
                     uid: loggedUser.uid,
                     username: loggedUser.username,
