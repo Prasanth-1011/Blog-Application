@@ -112,7 +112,7 @@ const Explore = () => {
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-sm font-medium whitespace-pre-wrap text-slate-600 sm:text-base md:text-lg lg:text-xl">
+                        <p className="text-sm font-medium whitespace-pre-wrap text-slate-600 sm:text-base lg:text-lg">
                             {viewingPost.content}
                         </p>
                     </div>
@@ -171,7 +171,7 @@ const Explore = () => {
                             <textarea
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
-                                placeholder="Write a thoughtful comment..."
+                                placeholder="Write Your Comments"
                                 className="min-h-[80px] w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-medium text-slate-900 transition-all outline-none focus:border-rose-300 focus:bg-white focus:ring-4 focus:ring-rose-500/10 md:min-h-[60px] md:rounded-[24px] md:bg-white md:pr-14 md:text-sm md:shadow-lg md:shadow-slate-200/50"
                             />
                             <button
