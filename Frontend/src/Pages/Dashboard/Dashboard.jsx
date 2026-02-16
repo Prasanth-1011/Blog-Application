@@ -10,7 +10,6 @@ import {
     IconUser,
     IconLogout,
     IconMenu,
-    IconClose,
 } from "../../Utils/Icons.jsx";
 
 const Dashboard = () => {
