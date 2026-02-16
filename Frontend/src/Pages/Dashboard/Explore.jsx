@@ -112,7 +112,7 @@ const Explore = () => {
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-sm font-medium whitespace-pre-wrap text-slate-600 sm:text-base md:text-lg lg:text-xl xl:text-2xl">
+                        <p className="text-sm font-medium whitespace-pre-wrap text-slate-600 sm:text-base md:text-lg lg:text-xl">
                             {viewingPost.content}
                         </p>
                     </div>
@@ -125,7 +125,7 @@ const Explore = () => {
                             Comments ({viewingPost.comments?.length || 0})
                         </h3>
                         <p className="mt-1 text-sm font-semibold text-slate-400 capitalize sm:text-sm">
-                            Engage with the story
+                            Engage With The Story
                         </p>
                     </div>
 
@@ -137,10 +137,7 @@ const Explore = () => {
                                     <IconMessageCircle className="h-8 w-8" />
                                 </div>
                                 <p className="text-sm font-black text-slate-400 capitalize">
-                                    No comments yet
-                                </p>
-                                <p className="mt-1 text-sm font-medium text-slate-300">
-                                    Be the first to share your thoughts!
+                                    No Comments Yet
                                 </p>
                             </div>
                         ) : (
