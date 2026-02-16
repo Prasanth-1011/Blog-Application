@@ -84,7 +84,7 @@ router.post("/:id/comment", async (req, res) => {
         post.comments.push(newComment);
         await post.save();
 
-        const updatedPost = await Post.findById(id); // Return full updated post
+        const updatedPost = await Post.findById(id);
         res.status(200).json(updatedPost);
     } catch (error) {
         res.status(500).json({ message: error.message });
