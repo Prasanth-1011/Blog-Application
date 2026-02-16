@@ -196,14 +196,6 @@ const Explore = () => {
 
     return (
         <div className="space-y-6">
-            {/* Database Feedback Label */}
-            <div className="flex items-center gap-2 px-1">
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] sm:h-2 sm:w-2" />
-                <p className="text-[10px] font-black text-slate-400 sm:text-xs">
-                    Posts Fetched From Database
-                </p>
-            </div>
-
             {posts.length === 0 ? (
                 <div className="flex min-h-[400px] flex-col items-center justify-center rounded-[32px] border border-dashed border-slate-200 bg-white/50 p-8 text-center sm:p-12">
                     <h3 className="text-xl font-black text-slate-900 sm:text-2xl">
